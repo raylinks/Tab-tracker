@@ -5,9 +5,14 @@ module.exports = {
         user:process.env.DB_USER || 'tabtracker',
         password:process.env.DB_PASS || 'tabtracker',
         options: {
-            dialect: process.env.DIALECT || 'sqlite' ,
             host: process.env.HOST || 'localhost',
-            storage: './tabtracker.sqlite'
+            dialect: process.env.DIALECT || 'postgres' ,
+            dialectOptions: {
+                ssl: process.env.DATABASE_SSL || false
+              },
+              dialectModule: require('pg')
+            
+           // storage: './tabtracker.sqlite'
         }
     }
 }
