@@ -1,14 +1,14 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const  pg = require('pg');
+//const  pg = require('pg');
 const morgan = require('morgan');
-const {sequelize} = require('./models').default;
+const { sequelize } = require('./models/index');
 const config =require('./config/config')
 
 const app = express();
 app.use(morgan('combined'));
-app.use(pg());
+//app.use(pg());
 app.use(bodyParser.json());
 app.use(cors());
 
