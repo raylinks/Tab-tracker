@@ -69,7 +69,7 @@ module.exports ={
               email: email
             }
           })
-        res.json(user);
+       // res.json(user);
           if (user){
            
           
@@ -86,11 +86,11 @@ module.exports ={
              const token2 = jwt.sign(user.toJSON(), CONFIG.jwtSecret,{
               expiresIn:"1h"
           });
-        //  console.log(token2);
-        // res.send({
-        //   //user: userJson ,
-        //  token1:  token2
-        //  });
+         console.log(token2);
+        res.send({
+          user: user ,
+         token1:  token2
+         });
      
      res.end({
           message: 'Auth Successful',
