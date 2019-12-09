@@ -5,17 +5,33 @@ const bcrypt_p 			= require('bcrypt-promise');
 const jwt           	= require('jsonwebtoken');
 const {TE, to}          = require('../../services/util.service');
 const CONFIG            = require('../config/config');
+const Promise           = require('bluebird');
+
 
 module.exports = (sequelize, DataTypes) => {
     var Model = sequelize.define('User', {
-        FirstName     : DataTypes.STRING,
-        LastName      : DataTypes.STRING,
-        Email     : {type: DataTypes.STRING, allowNull: true, unique: true, validate: { isEmail: {msg: "Phone number invalid."} }},
-        Phone     : {type: DataTypes.STRING, allowNull: true, unique: true, validate: { len: {args: [7, 20], msg: "Phone number invalid, too short."}, isNumeric: { msg: "not a valid phone number."} }},
+        firstname     : DataTypes.STRING,
+        lastname      : DataTypes.STRING,
+        email     : {
+            type: DataTypes.STRING,
+             allowNull: true,
+              unique: true, 
+                validate: { 
+                    isEmail: {msg: "Email is  invalid."} }
+                },
+        phone     : {type: DataTypes.STRING, allowNull: true, unique: true, 
+                        validate: { len: {args: [7, 20], msg: "Phone number invalid, too short."}, 
+                        isNumeric: { msg: "not a valid phone number."} }},
         password  : DataTypes.STRING,
-        EmailConfirm : {type: DataTypes.BOOLEAN, defaultValue: false},
-        OTP  : DataTypes.STRING,
+        token: DataTypes.STRING
+       // EmailConfirm : {type: DataTypes.BOOLEAN, defaultValue: false},
+        //OTP  : DataTypes.STRING,
     });
+
+    Model.associate = function(models){
+        Model.hasMany(models.Post)
+    };
+    
 
     // Model.associate = function(models){
     //     this.Companies = this.hasOne(models.df
@@ -35,6 +51,10 @@ module.exports = (sequelize, DataTypes) => {
             user.password = hash;
         }
     });
+
+    Model.prototype.comparePassword = function(password){
+        return bcrypt.compareAsync(password, this.password)
+    }
 
     Model.prototype.comparePassword = async function (pw) {
         let err, pass

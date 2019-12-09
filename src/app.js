@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const { sequelize } = require('./models/index');
 const config =require('./config/config')
-
+ //require('./passport');
 const app = express();
 app.use(morgan('combined'));
 //app.use(pg());

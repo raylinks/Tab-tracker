@@ -1,29 +1,12 @@
-// module.exports = {
-//     port:  process.env.PORT || 8081,
-   
-//     db:{
-//         database:process.env.DB_NAME  || 'tabtracker',
-//         user:process.env.DB_USER || 'postgres',
-        
-        
-//         password:process.env.DB_PASS || '',
-//         options: {
-//             host: process.env.HOST || 'localhost',
-//             dialect: process.env.DIALECT || 'postgres' ,
-           
-//              // dialectModule: require('pg')
-            
-//            // storage: './tabtracker.sqlite'
-//         }
-//     }
-// }
 
 require('dotenv').config();
 let CONFIG = {} //Make this global to use all over the application
 CONFIG.app          = process.env.APP   || 'dev';
-CONFIG.port         = process.env.PORT  || '3000';
+CONFIG.port         = process.env.PORT  || '8081';
+
 CONFIG.db_dialect   = process.env.DB_DIALECT    || 'postgres';
 CONFIG.db_host      = process.env.DB_HOST       || 'localhost';
+//CONFIG.db_storage   = process.env.DB_STORAGE    || 'postgres';
 CONFIG.db_port      = process.env.DB_PORT       || ' 5432';
 CONFIG.db_name      = process.env.DB_NAME       || 'tabtracker';
 CONFIG.db_user      = process.env.DB_USER       || 'postgres';
@@ -34,5 +17,12 @@ CONFIG.TemplateId  = process.env.TemplateId   || '';
 CONFIG.TemplateIdTransaction  = process.env.TemplateIdTransaction   || '';
 CONFIG.jwt_encryption  = process.env.JWT_ENCRYPTION || '';
 CONFIG.jwt_expiration  = process.env.JWT_EXPIRATION || '10000';
+CONFIG.jwtSecret  = process.env.JWT_SECRET || 'secret';
 
-module.exports = CONFIG;
+
+// authentication
+let authentication =  {
+    jwtSecret: process.env.JWT_SECRET || 'secret'
+};
+
+module.exports = CONFIG, authentication;

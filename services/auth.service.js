@@ -2,7 +2,8 @@ const { User } 	    = require('../models');
 const validator     = require('validator');
 const { to, TE }    = require('../services/util.service');
 
-const getUniqueKeyFromBody = function(body){// this is so they can send in 3 options unique_key, email, or phone and it will work
+const getUniqueKeyFromBody = function(body){
+    // this is so they can send in 3 options unique_key, email, or phone and it will work
     let unique_key = body.unique_key;
     if(typeof unique_key==='undefined'){
         if(typeof body.Email != 'undefined'){
@@ -23,7 +24,7 @@ const createUser = async (userInfo) => {
 
     auth_info={};
     auth_info.status='create';
-a
+
     unique_key = getUniqueKeyFromBody(userInfo);
     if(!unique_key) TE('An email or phone number was not entered.');
 

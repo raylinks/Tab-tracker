@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "./node_modules/nodemon/bin/nodemon.js src/app.js "
+    "start": "./node_modules/nodemon/bin/nodemon.js src/app.js ",
+    "lint": "true || ./node_modules/.bin/eslint **/*.js",
+    "seed": "node ./seed"
   },
   "keywords": [],
   "author": "",
@@ -12,7 +14,9 @@
   "dependencies": {
     "await-to-js": "^2.1.1",
     "bcrypt": "^3.0.7",
+    "bcrypt-nodejs": "0.0.3",
     "bcrypt-promise": "^2.0.0",
+    "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
@@ -20,10 +24,14 @@
     "joi": "^14.3.1",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.9.1",
+    "nodemailer": "^6.3.1",
     "nodemon": "^1.19.2",
     "parse-error": "^0.2.0",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
     "pg": "^7.12.1",
     "sequelize": "^5.18.4",
-    "sqlite": "^3.0.3"
+    "sqlite": "^3.0.3",
+    "vuex-router-sync": "^5.0.0"
   }
 }
