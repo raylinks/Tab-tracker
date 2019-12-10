@@ -16,6 +16,30 @@ module.exports = {
                 error: "unable to create post"
             })
         }
+    },
+
+    async show(req,res){
+        try{
+            var post  =  await Post.findOne({
+                where: {id: req.params.postId}
+            })
+            
+            res.status(200).json(post);
+        }catch(err){
+            res.status(400).send({
+                error:"unable to find the post"
+            })
+        }
+    },
+
+    async getAll(req,res){
+        try{
+            const posts = await Post.findAll()
+            res.status(200).json(posts);
+
+        }catch(err){
+
+        }
     }
 
 }

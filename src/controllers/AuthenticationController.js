@@ -69,7 +69,7 @@ module.exports ={
               email: email
             }
           })
-       // res.json(user);
+    
           if (user){
            
           

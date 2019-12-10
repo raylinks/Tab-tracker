@@ -42,11 +42,11 @@ module.exports = (app) => {
     app.post('/post',
         PostController.createPost)
 
-   app.post('/histories',
-       HistoriesController.post)
+   app.get('/post/:postId',
+       PostController.show)
 
-   app.get('/histories',
-       HistoriesController.index)
+   app.get('/posts',
+       PostController.getAll)
 
 
 }

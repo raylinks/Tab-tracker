@@ -6,9 +6,15 @@ var user  =   Sequelize.define('Post',{
         model: 'Posts',
         key: 'id'
         }
-    },
+        },
     title: Datatypes.STRING,
     content:Datatypes.STRING
     });
+    user.associate = function(models){
+        user.belongsToMany(models.Post, { as: 'Comment', through: 'PostComment'});
+      
+    };
+
+    
     return user
 }
