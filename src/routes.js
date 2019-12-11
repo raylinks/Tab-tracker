@@ -2,7 +2,7 @@ const AuthenticationController = require('./controllers/AuthenticationController
 const AuthenticationControllerPolicy= require('./policies/AuthenticationControllerPolicy');
 const SongsController = require('./controllers/SongsController')
 const PostController = require('./controllers/PostController')
-const HistoriesController = require('./controllers/HistoriesController')
+const ServiceController = require('./controllers/ServiceController')
 
 
 module.exports = (app) => {
@@ -32,13 +32,6 @@ module.exports = (app) => {
     app.put('/songs/:songId',
        SongsController.put)
 
-
-   // app.get('/bookmarks',
-   //     BookmarksController.index)
-
-   // app.post('/bookmarks',
-   //     BookmarksController.post)
-
     app.post('/post',
         PostController.createPost)
 
@@ -48,5 +41,13 @@ module.exports = (app) => {
    app.get('/posts',
        PostController.getAll)
 
+   app.post('/flutter', 
+    ServiceController.getAccountName)
 
+   app.post('/card/deposit',
+      ServiceController.cardDeposit)
+
+     // app.post('/trustpaybvn', upload.single('image'),
+     app.post('/trustpaybvn',
+      ServiceController.trustpayBvn)
 }

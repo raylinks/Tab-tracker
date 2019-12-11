@@ -40,6 +40,21 @@ module.exports = {
         }catch(err){
 
         }
-    }
+    },
 
+
+    async uploadImage(req,res){
+        try{
+           await cloudinary.uploader.upload(req.body.image, function(result) {
+                var image = req.body.image;
+                image = result.secure_url;
+                req.body['image'] = timage;
+                const product = Post.create();
+                res.status(200).json(product);
+            });
+        }catch(err){
+
+        }
+    }
 }
+

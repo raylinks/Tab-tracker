@@ -12,6 +12,7 @@ var user  =   Sequelize.define('Post',{
     });
     user.associate = function(models){
         user.belongsToMany(models.Post, { as: 'Comment', through: 'PostComment'});
+        user.hasMany(models.Like);
       
     };
 
