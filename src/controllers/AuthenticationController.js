@@ -13,9 +13,16 @@ function jwtSignUser(user){
 module.exports ={
      async register(req, res) {
          try{
+             let role = Role.findOne({
+               where:{
+                 name:user
+               }
+             });
+             console.log(role);
              
            let token = Math.random().toString(36).substr(0,20);
            req.body['token'] = token;
+           req.body['roleId'] = role;
              const user = await User.create(req.body);
             console.log(user);
             // const userJson = user.toJSON()

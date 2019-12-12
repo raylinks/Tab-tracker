@@ -3,6 +3,7 @@ const AuthenticationControllerPolicy= require('./policies/AuthenticationControll
 const SongsController = require('./controllers/SongsController')
 const PostController = require('./controllers/PostController')
 const ServiceController = require('./controllers/ServiceController')
+const CommentController = require('./controllers/CommentController')
 
 
 module.exports = (app) => {
@@ -50,4 +51,7 @@ module.exports = (app) => {
      // app.post('/trustpaybvn', upload.single('image'),
      app.post('/trustpaybvn',
       ServiceController.trustpayBvn)
+
+      app.post('/post/comment',
+      CommentController.postComment)
 }
