@@ -1,4 +1,5 @@
-const {User} = require('../models');
+const {User, Role} = require('../models');
+
 const nodemailer = require('nodemailer');
 const jwt = require('jsonwebtoken');
 const CONFIG = require('../config/config');
@@ -10,21 +11,24 @@ function jwtSignUser(user){
   })
 }
 
+
 module.exports ={
      async register(req, res) {
          try{
-             let role = Role.findOne({
+          // console.log("ade");
+             const role =await Role.findOne({
                where:{
-                 name:user
+                 id: 1
                }
-             });
-             console.log(role);
+             })
+           //   console.log(role);
+          
              
            let token = Math.random().toString(36).substr(0,20);
            req.body['token'] = token;
-           req.body['roleId'] = role;
+           req.body['RoleId'] = role.id;
              const user = await User.create(req.body);
-            console.log(user);
+            //console.log(user);
             // const userJson = user.toJSON()
            
             // res.send({

@@ -4,6 +4,7 @@ const SongsController = require('./controllers/SongsController')
 const PostController = require('./controllers/PostController')
 const ServiceController = require('./controllers/ServiceController')
 const CommentController = require('./controllers/CommentController')
+const RoleController = require('./controllers/RoleController')
 
 
 module.exports = (app) => {
@@ -39,6 +40,7 @@ module.exports = (app) => {
    app.get('/post/:postId',
        PostController.show)
 
+
    app.get('/posts',
        PostController.getAll)
 
@@ -52,6 +54,11 @@ module.exports = (app) => {
      app.post('/trustpaybvn',
       ServiceController.trustpayBvn)
 
-      app.post('/post/comment',
+
+
+      app.post('/post/:postId/comment', 
       CommentController.postComment)
+
+      app.post('/role',
+      RoleController.createRole)
 }

@@ -7,6 +7,7 @@ module.exports = {
     async createPost(req,res){
         try{
            var user = jwt.verify(req.headers.authorization, CONFIG.jwtSecret);
+           console.log(user);   
             req.body['UserId'] = user.id;
              const post = await Post.create(req.body);
              return res.status(200).json(post);

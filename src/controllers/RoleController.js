@@ -4,7 +4,8 @@ const {Role} = require('../models')
 module.exports = {
     async createRole(req,res){
         try{
-            const role = await Role.create()
+            const role = await Role.create(req.body)
+            console.log(role);
             res.status(200).json(role);
         }catch(err){
             console.log(err);

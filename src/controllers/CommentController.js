@@ -1,8 +1,9 @@
-const {Comment} = require('../models/Comment')
+const {Comment} = require('../models')
+const {Post} = require('../models')
+const jwt = require('jsonwebtoken');
+const CONFIG = require('../config/config');
 
 module.exports ={
-
-
 
     async getComments(req,res){
         try{
@@ -13,26 +14,25 @@ module.exports ={
     },
 
     async postComment(req,res){
-
-        try{
-          //  console.log("i am here");
-            let post_id = Post.findOne({  
-                // include: [
-                //     {
-                //       model: Post,
-                //       as: 'children'
-                //     }
-                // ]
+        try{  
+           const user = jwt.verify(req.headers.authorization, CONFIG.jwtSecret);
+          // res.end(user);
+                
+        req.body['email'] = user.email;
+            req.body['firstname'] = user.firstname;
+            req.body['UserId'] = user.id
+             const post =await Post.findOne({  
                 where:{
-                        id:songId,
-                     }  
-
+                        id:req.params.postId,
+                      }  
             })
-            const comment = await Comment.create(postId)
+
+            req.body['PostId'] = post.id 
+            const comment = await Comment.create(req.body)
             res.status(200).json(comment);
 
         }catch(err){
-
+          
         }
     }
 

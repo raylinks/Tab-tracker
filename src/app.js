@@ -21,7 +21,7 @@ app.get('status', (req,res)=>{
 
 
 require('./routes')(app)
-sequelize.sync({force:true})
+sequelize.sync()
     .then(() => {
         app.listen(config.port)
         console.log(` Server started at ${config.port}`)
