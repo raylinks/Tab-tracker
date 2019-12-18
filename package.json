@@ -33,6 +33,7 @@
     "request": "^2.88.0",
     "sequelize": "^5.18.4",
     "sqlite": "^3.0.3",
+    "uuid": "^3.3.3",
     "vuex-router-sync": "^5.0.0"
   }
 }

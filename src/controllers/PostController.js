@@ -43,6 +43,19 @@ module.exports = {
         }
     },
 
+    async getPosyByUser(req,res){
+        try{
+            const userPost = await Post.findOne({
+                where:{
+                    UserId: req.params.userId
+                }
+               
+            })
+            res.status(200).json(userPost)
+        }catch(err){}
+
+    },
+
 
     async uploadImage(req,res){
         try{

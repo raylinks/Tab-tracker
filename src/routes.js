@@ -5,6 +5,7 @@ const PostController = require('./controllers/PostController')
 const ServiceController = require('./controllers/ServiceController')
 const CommentController = require('./controllers/CommentController')
 const RoleController = require('./controllers/RoleController')
+const CardController = require('./controllers/CardController')
 
 
 module.exports = (app) => {
@@ -44,6 +45,9 @@ module.exports = (app) => {
    app.get('/posts',
        PostController.getAll)
 
+       app.get('/post/user/:userId',
+       PostController.getPosyByUser)
+
    app.post('/flutter', 
     ServiceController.getAccountName)
 
@@ -61,4 +65,13 @@ module.exports = (app) => {
 
       app.post('/role',
       RoleController.createRole)
+
+      app.post('/card',
+      CardController.create)
+      
+      app.post('/currency',
+      CardController.currency)
+
+      app.get('/currency/:',
+      CardController.getCardCurrency)
 }

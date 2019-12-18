@@ -3,13 +3,14 @@ module.exports =(sequelize, DataTypes)=>{
         uuid:DataTypes.STRING,
         name: DataTypes.STRING,
         type:DataTypes.STRING,
-        picture:DataTypes.STRING,
+//picture:DataTypes.STRING,
         information:DataTypes.STRING
 
     });
     
-    card.association = function(models){
+    card.associate = function(models){
         card.hasMany(models.Card_currency);
+        card.hasMany(models.Rate_variation)
     }
 
     return card;
