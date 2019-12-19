@@ -74,4 +74,8 @@ module.exports = (app) => {
 
       app.get('/currency/:',
       CardController.getCardCurrency)
+
+
+      app.post('/rate/:cardId/variation/:currencyId',
+      CardController.rateVariation)
 }

@@ -4,5 +4,11 @@ module.exports = (sequelize, DataTypes)=>{
         currency:DataTypes.STRING
 
     })
+
+    card_currency.associate = function(models){
+        card_currency.hasMany(models.Rate_variation);
+        
+    }
+
     return card_currency;
 }
