@@ -34,6 +34,9 @@ module.exports = (sequelize, DataTypes) => {
         Model.hasMany(models.Like);
         Model.hasOne(models.User_wallet);
         Model.hasMany(models.Ref);
+        Model.hasMany(models.Transaction);
+        Model.hasMany(models.Deposit);
+
     };
     
 

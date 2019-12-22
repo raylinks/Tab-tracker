@@ -1,7 +1,9 @@
 //const {Flutterwave} = require('../services/Flutterwave');
 const request = require('request');
+const {Ref,Transaction,Deposit} = require('../models')
 const jwt = require('jsonwebtoken');
 const CONFIG = require('../config/config');
+const uuidv1 = require('uuid/v1');
 var voucher_codes = require('voucher-code-generator');
 
 module.exports={
@@ -35,20 +37,38 @@ module.exports={
                 length: 8,
             
             });
+            
+            var trans = voucher_codes.generate({
+                prefix: "TR-",
+                postfix: "-REF"
+            });
 
-            //console.log(refs);
+
             req.body['UserId'] = user.id,
-            req.body['val'] = refs
+            
+            req.body['val'] = refs[0],
+            req.body['reference_code'] = trans[0]
             var createRef = await Ref.create(req.body);
-            console.log(createRef);
-            var createRef = await Transaction.create(req.body);
-            var createRef = await Deposit.create(req.body);
+            
+               // log to Transaction table
+            req.body['uuid'] = uuidv1(),
+            req.body['type'] = "deposit",
+            req.body['status'] = "pending"
+            var transaction = await Transaction.create(req.body);
+          
+            //log to Deposit table
+            req.body['transaction_id'] = transaction.id,
+            req.body['deposit_type'] ="flfutterwave", 
+            req.body['status'] = "pending",
+            req.body['reference_code'] = trans[0]
+            var createDeposit = await Deposit.create(req.body);
+            
             var deposit = await request.post('https://api.ravepay.co/flwv3-pug/getpaidx/api/v2/hosted/pay',
             {
                 json:{
                     amount  : "1000",
                     PBFPubKey : "FLWPUBK-ddd359cf80fcdae2a4271bf0ac231e5e-X",
-                    txref : "8u5yhjkhj",
+                    txref :  trans[0],
                     redirect_url : "https://localhost:8080/redirect",
                     currency :'NGN',
                     meta : "87",
