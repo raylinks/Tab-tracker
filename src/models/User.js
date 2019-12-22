@@ -33,6 +33,7 @@ module.exports = (sequelize, DataTypes) => {
         Model.hasMany(models.Comment)
         Model.hasMany(models.Like);
         Model.hasOne(models.User_wallet);
+        Model.hasMany(models.Ref);
     };
     
 

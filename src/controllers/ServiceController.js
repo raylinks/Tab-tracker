@@ -1,5 +1,8 @@
 //const {Flutterwave} = require('../services/Flutterwave');
 const request = require('request');
+const jwt = require('jsonwebtoken');
+const CONFIG = require('../config/config');
+var voucher_codes = require('voucher-code-generator');
 
 module.exports={
 
@@ -27,24 +30,44 @@ module.exports={
 
     async cardDeposit(req,res){
         try{
-            var deposit = await request.post('https://api.ravepay.co/v2/flwv3-pug/getpaidx/api/v2/hosted/pay',
+            var user = jwt.verify(req.headers.authorization, CONFIG.jwtSecret);
+            var refs = voucher_codes.generate({
+                length: 8,
+            
+            });
+
+            //console.log(refs);
+            req.body['UserId'] = user.id,
+            req.body['val'] = refs
+            var createRef = await Ref.create(req.body);
+            console.log(createRef);
+            var createRef = await Transaction.create(req.body);
+            var createRef = await Deposit.create(req.body);
+            var deposit = await request.post('https://api.ravepay.co/flwv3-pug/getpaidx/api/v2/hosted/pay',
             {
                 json:{
                     amount  : "1000",
-                    PBFPubKey : "FLWPUBK-c0e49026605f0a79006796e3dd68ff79-X",
-                    txref : "8uyhjkhj",
-                    redirect_url : "iuhgbji",
+                    PBFPubKey : "FLWPUBK-ddd359cf80fcdae2a4271bf0ac231e5e-X",
+                    txref : "8u5yhjkhj",
+                    redirect_url : "https://localhost:8080/redirect",
                     currency :'NGN',
                     meta : "87",
                     customer_email : "ghb@gmail.com",
                     customer_phone : "09099911111"
                 }
-            }, (err,res,body)=>{
-                console.log(res);
+            },(err,res,body)=>{    
+          console.log(body.data.link); 
             });
-
         }catch(err){
             console.log(err);
+        }
+    },
+
+    async verifyDeposit(){
+        try{
+            var verify = await request.post("https://api.ravepay.co//flwv3-pug/getpaidx/api/v2/verify")
+        }catch(err){
+
         }
     },
 

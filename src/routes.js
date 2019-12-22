@@ -13,6 +13,8 @@ module.exports = (app) => {
     //    AuthenticationController.register,
     //    AuthenticationControllerPolicy.register)
 
+
+    // AUTHENTICATION ROUTES HERE
      app.post('/register', 
        AuthenticationController.register)
 
@@ -21,10 +23,12 @@ module.exports = (app) => {
 
    app.get('/all/users',
       AuthenticationController.getUsers)
+      //ENDS HERE
 
+
+//  SONGS ROUTES HERE
     app.get('/songs',
        SongsController.index)
-
 
     app.post('/songs',
        SongsController.post)
@@ -34,7 +38,9 @@ module.exports = (app) => {
 
     app.put('/songs/:songId',
        SongsController.put)
+//ENDS HERE
 
+//POST ROUTES HERE
     app.post('/post',
         PostController.createPost)
 
@@ -48,6 +54,8 @@ module.exports = (app) => {
        app.get('/post/user/:userId',
        PostController.getPosyByUser)
 
+
+       //SERVICE ROUTES HERE
    app.post('/flutter', 
     ServiceController.getAccountName)
 
@@ -57,15 +65,19 @@ module.exports = (app) => {
      // app.post('/trustpaybvn', upload.single('image'),
      app.post('/trustpaybvn',
       ServiceController.trustpayBvn)
+//ENDS HERE
 
 
+app.post('/role',
+      RoleController.createRole)
 
+
+//COMMENTS ROUTES HERE
       app.post('/post/:postId/comment', 
       CommentController.postComment)
 
-      app.post('/role',
-      RoleController.createRole)
-
+      
+// CARDS ROUTES HERE
       app.post('/card',
       CardController.create)
       
