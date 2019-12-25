@@ -57,10 +57,13 @@ module.exports = (app) => {
 
        //SERVICE ROUTES HERE
    app.post('/flutter', 
-    ServiceController.getAccountName)
+    ServiceController.getAccountName) 
 
    app.post('/card/deposit',
       ServiceController.cardDeposit)
+
+      app.post('/verify/deposit',
+      ServiceController.verifyDeposit)
 
      // app.post('/trustpaybvn', upload.single('image'),
      app.post('/trustpaybvn',

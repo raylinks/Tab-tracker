@@ -47,7 +47,9 @@ module.exports={
             req.body['UserId'] = user.id,
             
             req.body['val'] = refs[0],
-            req.body['reference_code'] = trans[0]
+            req.body['reference_code'] = trans[0],
+            req.body['amount'] = req.body.amount,
+            req.body['status'] = req.body.status
             var createRef = await Ref.create(req.body);
             
                // log to Transaction table
@@ -58,39 +60,106 @@ module.exports={
           
             //log to Deposit table
             req.body['transaction_id'] = transaction.id,
-            req.body['deposit_type'] ="flfutterwave", 
-            req.body['status'] = "pending",
+            req.body['deposit_type'] ="paystack", 
+            req.body['status'] = "processing",
             req.body['reference_code'] = trans[0]
             var createDeposit = await Deposit.create(req.body);
             
             var deposit = await request.post('https://api.ravepay.co/flwv3-pug/getpaidx/api/v2/hosted/pay',
             {
                 json:{
-                    amount  : "1000",
-                    PBFPubKey : "FLWPUBK-ddd359cf80fcdae2a4271bf0ac231e5e-X",
-                    txref :  trans[0],
+                    amount:"3100",
+                    PBFPubKey : "FLWPUBK_TEST-23fe61f1d8b320ff104a0ea53568c053-X",
+                    txref :  refs[0],
                     redirect_url : "https://localhost:8080/redirect",
                     currency :'NGN',
                     meta : "87",
                     customer_email : "ghb@gmail.com",
                     customer_phone : "09099911111"
                 }
-            },(err,res,body)=>{    
-          console.log(body.data.link); 
+            },(err,res,body)=>{   
+                 
+                //res.status(200);
+         console.log(body.data.link); 
             });
         }catch(err){
             console.log(err);
         }
     },
 
-    async verifyDeposit(){
+    async verifyDeposit(req,res){
         try{
-            var verify = await request.post("https://api.ravepay.co//flwv3-pug/getpaidx/api/v2/verify")
+         // console.log('man');
+            var userRef = await Ref.findOne({
+                limit: 1,
+                where:{
+                    val:req.body.txref
+                }
+            })
+            console.log(userRef.id);
+           
+            if(userRef.status  == 0)
+                var ref = userRef.val;
+                var stat = 'error';
+                var amount = userRef.amount;
+                var currency = 'NGN';
+                console.log(ref);
+                 var verify = await request.post("https://api.ravepay.co//flwv3-pug/getpaidx/api/v2/verify",
+                {
+                json:{
+                    'SECKEY': "FLWSECK_TEST-074b99cd4b3e6a383693e8f47e8a293e-X",
+                    'txref' : ref,
+                },
+                
+             //  verify2()
+
+                //if(verify == 400)
+                //   var callback = rr;
+                    //return redirect()->away($callback);
+                
+                
+            },
+            (err,res,body)=>{    
+console.log(body);
+            }); 
         }catch(err){
+            console.log(err);
 
         }
     },
 
+    async verify2(req,res){
+        console.log("love");
+        try{
+            var ck = req.body.callback;
+            var sta = 'success'
+            if(verify.status  == 400)
+            var callback = base64_decode(ck) + '?deposit-status=' + sta;
+            //return redirect()->away($callback);
+
+            else{
+                var txref = verify['data']['data']['txref'];
+                var flwref = verify['data']['data']['flwref'];
+                var userRef = await Ref.findOne({
+                    where:{
+                        limit:1 ,
+                        val: txref
+                    }
+                });      
+                var paymentStatus = verify['data']['status'];
+                var chargeResponsecode = verify['data']['data']['chargecode'];
+                var chargeAmount = verify['data']['data']['amount'];
+                var chargeCurrency = verify['data']['data']['currency'];
+
+            }
+
+        }catch(err){
+            console.log(err);
+        }
+
+
+    },
+   
     async trustpayBvn(req,res){
         try{
             var trustpay_bvn = await request.post('https://api.onepipe.io/v1/generic/transact',{
