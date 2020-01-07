@@ -12,7 +12,7 @@ const sequelize = new Sequelize(CONFIG.db_name, CONFIG.db_user, CONFIG.db_passwo
   dialect: CONFIG.db_dialect,
   port: CONFIG.db_port,
 //   dialectOptions: {
-//     socketPath: ‘/cloudsql/scenic-aileron-250517:us-central1:bank-numero’
+//     socketPath: ‘/cloudsql/scenic-aileron-25051b b   7:us-central1:bank-numero’
 // },
 //operatorsAliases: Sequelize.Op,
   //operatorsAliases: false
@@ -30,6 +30,7 @@ fs.readdirSync(__dirname)
 //     db[modelName].associate(db);
 //   }
 // });
+
 
 Object.keys(db).forEach(function(modelName){
   if('associate' in db[modelName]){

@@ -57,6 +57,7 @@ module.exports={
             req.body['type'] = "deposit",
             req.body['status'] = "pending"
             var transaction = await Transaction.create(req.body);
+           // console.log(transaction);
           
             //log to Deposit table
             req.body['transaction_id'] = transaction.id,
@@ -64,12 +65,12 @@ module.exports={
             req.body['status'] = "processing",
             req.body['reference_code'] = trans[0]
             var createDeposit = await Deposit.create(req.body);
-            
+            //console.log(createDeposit);
             var deposit = await request.post('https://api.ravepay.co/flwv3-pug/getpaidx/api/v2/hosted/pay',
             {
                 json:{
-                    amount:"3100",
-                    PBFPubKey : "FLWPUBK_TEST-23fe61f1d8b320ff104a0ea53568c053-X",
+                    amount:"1700",
+                    PBFPubKey : "FLWPUBK-ddd359cf80fcdae2a4271bf0ac231e5e-X",
                     txref :  refs[0],
                     redirect_url : "https://localhost:8080/redirect",
                     currency :'NGN',
@@ -96,7 +97,7 @@ module.exports={
                     val:req.body.txref
                 }
             })
-            console.log(userRef.id);
+            console.log(userRef.val);
            
             if(userRef.status  == 0)
                 var ref = userRef.val;
@@ -107,7 +108,7 @@ module.exports={
                  var verify = await request.post("https://api.ravepay.co//flwv3-pug/getpaidx/api/v2/verify",
                 {
                 json:{
-                    'SECKEY': "FLWSECK_TEST-074b99cd4b3e6a383693e8f47e8a293e-X",
+                    'SECKEY': "FLWSECK-ee9acb7b7837e57b08feba8843733dd0-X",
                     'txref' : ref,
                 },
                 

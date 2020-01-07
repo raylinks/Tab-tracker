@@ -32,10 +32,13 @@ module.exports = (sequelize, DataTypes) => {
         Model.hasMany(models.Post)
         Model.hasMany(models.Comment)
         Model.hasMany(models.Like);
-        Model.hasOne(models.User_wallet);
+        Model.hasOne(models.UserWallet);
         Model.hasMany(models.Ref);
         Model.hasMany(models.Transaction);
         Model.hasMany(models.Deposit);
+        Model.hasMany(models.WalletHistory);
+        Model.hasMany(models.CardBuy);
+        
 
     };
     

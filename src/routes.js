@@ -6,7 +6,7 @@ const ServiceController = require('./controllers/ServiceController')
 const CommentController = require('./controllers/CommentController')
 const RoleController = require('./controllers/RoleController')
 const CardController = require('./controllers/CardController')
-
+const  multer = require('multer');
 
 module.exports = (app) => {
     // app.post('/register', 
@@ -81,7 +81,7 @@ app.post('/role',
 
       
 // CARDS ROUTES HERE
-      app.post('/card',
+      app.post('/card',CardController.upload.single('file'),
       CardController.create)
       
       app.post('/currency',
@@ -90,6 +90,8 @@ app.post('/role',
       app.get('/currency/:',
       CardController.getCardCurrency)
 
+      app.post('/upload', CardController.upload.single('file'),
+      CardController.uploadImage)
 
       app.post('/rate/:cardId/variation/:currencyId',
       CardController.rateVariation)
