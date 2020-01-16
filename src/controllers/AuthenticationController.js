@@ -4,6 +4,7 @@ const nodemailer = require('nodemailer');
 const jwt = require('jsonwebtoken');
 const CONFIG = require('../config/config');
 
+
 function jwtSignUser(user){
   const ONE_WEEK = 60* 60 *  24 * 7 
   return jwt.sign(user, process.env.SECRET_KEY ,{
@@ -129,5 +130,74 @@ module.exports ={
 
       }
 
+    },
+
+
+    async forgetPassword(req,res){
+      try{
+        const token = Math.random().toString(36).substr(0,20);
+                console.log(token);
+        const {email} = req.body
+        let user = await User.findOne({
+            where:{
+              email:email
+            }
+        })
+
+
+        user.password_token = token;
+        user.save();
+
+        if(!user){
+          res.status(400).json({
+            message:" this  email does not exist",
+
+          });
+        }else{
+          const transporter = nodemailer.createTransport({
+            service: "raybaba.org",
+            auth:{
+                user: 'support@raybaba.org',
+                pass: "history99"
+            }
+        })
+        const mailOptions = {
+            from: 'raymond@gmail.com',
+            to: user.email,
+            subject: 'forget password token',
+            html:'Click this link to reset your password <a href="http://localhost:8081 /resetpassword?token='+token+'">LINK</a>'
+        }
+        transporter.sendMail(mailOptions,(err,info)=>{
+            console.log(err);
+            console.log(info);
+        })
+        res.json({status:'updated',email:req.body.email})
+    }
+      }catch(err){
+          console.log(err);
+      }
+
+    },
+
+
+    async resetPassword(req,res){
+      try{
+        var user = jwt.verify(req.headers.authorization, CONFIG.jwtSecret);
+        console.log(user);   
+         
+  
+        if(req.body.password === req.body.confirm_password){
+          bcrypt.hash(req.body.password, 10, (err, hash)=>{
+              user.password = hash
+              user.password_token = null
+              user.save();
+          })
+        }else{
+          res.json({status:'failed',email:req.body.email})
+          }
+                
+      }catch(err){
+        console.log(err);
+      }
     }
 }

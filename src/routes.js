@@ -23,6 +23,8 @@ module.exports = (app) => {
 
    app.get('/all/users',
       AuthenticationController.getUsers)
+
+      app.post('/forget/password', AuthenticationController.forgetPassword)
       //ENDS HERE
 
 
