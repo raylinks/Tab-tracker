@@ -25,6 +25,8 @@ module.exports = (app) => {
       AuthenticationController.getUsers)
 
       app.post('/forget/password', AuthenticationController.forgetPassword)
+
+      app.get('/refering',AuthenticationController.getlink_Userwallet);
       //ENDS HERE
 
 

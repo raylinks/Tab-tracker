@@ -1,4 +1,4 @@
-const {User, Role} = require('../models');
+const {User, Role, UserWallet} = require('../models');
 
 const nodemailer = require('nodemailer');
 const jwt = require('jsonwebtoken');
@@ -13,22 +13,82 @@ function jwtSignUser(user){
 }
 
 
+function creditReferalUser(req, res){
+  const referUser = User.findOne({
+    where:{
+      refer_link:"qmiddn"
+    }
+  //   include:[
+  //     {
+  //         model: UserWallet
+  //     }
+  // ]
+  }) 
+console.log(referUser);
+  // if(!referUser){
+  //   res.status(201).json({
+      
+  //     message:"sorry this link does not exist"
+  //    });
+  // }else{
+  //   console.log(referUser);
+  // }
+}
+
 module.exports ={
+
+
+    async  getlink_Userwallet(req,res){
+      try{
+        const referUser = await User.findOne({
+          where:{
+            refer_link:"qmiddn"
+          },
+          include:[
+             {
+                 model: UserWallet
+             }
+         ]
+        }) 
+    //  console.log(referUser.UserWallet.initial_amount);
+        if(!referUser){
+          res.status(400).json({
+            message:"sorry this link does not exist"
+           });
+        }else{
+          res.status(200).json({
+          data:referUser.UserWallet.initial_amount,
+          message:"this is your initial amount"
+
+        })
+         }
+      }catch(err){
+        console.log(err);
+
+      }
+    },
+
+
      async register(req, res) {
          try{
-          // console.log("ade");
+      
              const role =await Role.findOne({
                where:{
                  id: 1
                }
              })
-           //   console.log(role);
+          //  //   console.log(role);
           
              
            let token = Math.random().toString(36).substr(0,20);
            req.body['token'] = token;
            req.body['RoleId'] = role.id;
+           req.body['refer_link'] = "ammddn";
              const user = await User.create(req.body);
+             req.body['initial_amount'] = "300";
+             req.body['actual_amount'] = "4000";
+             req.body['UserId'] = "7";
+             const user_wallet = await UserWallet.create(req.body);
             //console.log(user);
             // const userJson = user.toJSON()
            
@@ -37,11 +97,16 @@ module.exports ={
             //   token1: jwtSignUser(userJson)
             //  });
             //  console.log(token1);
-             return res.status(201).json(user);
+             return res.status(201).json({
+               data:user,
+               data1: user_wallet,
+               message:"Registration is Successful"
+              });
          }catch(err){
-                res.status(400).send({
-                  error:' this email address is already in use'  
-            })
+           console.log(err);
+                //res.status(400).send({
+                  //error:' this email address is already in use'  
+          //  })
          }
     },
 

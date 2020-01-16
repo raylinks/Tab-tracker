@@ -23,7 +23,8 @@ module.exports = (sequelize, DataTypes) => {
                         validate: { len: {args: [7, 20], msg: "Phone number invalid, too short."}, 
                         isNumeric: { msg: "not a valid phone number."} }},
         password  : DataTypes.STRING,
-        token: DataTypes.STRING
+        token: DataTypes.STRING,
+        refer_link:DataTypes.STRING
        // EmailConfirm : {type: DataTypes.BOOLEAN, defaultValue: false},
         //OTP  : DataTypes.STRING,
     });
