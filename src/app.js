@@ -17,7 +17,7 @@ app.get('status', (req,res)=>{
         message:'hello africa'
     });
     
-});
+});  
 
 
 require('./routes')(app)

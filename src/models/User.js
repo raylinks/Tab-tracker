@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
         email     : {
             type: DataTypes.STRING,
              allowNull: true,
-              unique: true, 
+             unique: true, 
                 validate: { 
                     isEmail: {msg: "Email is  invalid."} }
                 },
@@ -39,6 +39,7 @@ module.exports = (sequelize, DataTypes) => {
         Model.hasMany(models.Deposit);
         Model.hasMany(models.WalletHistory);
         Model.hasMany(models.CardBuy);
+        Model.hasOne(models.Token);
         
 
     };

@@ -1,4 +1,4 @@
-const {User, Role, UserWallet} = require('../models');
+const {User, Role, UserWallet,Token} = require('../models');
 
 const nodemailer = require('nodemailer');
 const jwt = require('jsonwebtoken');
@@ -13,27 +13,38 @@ function jwtSignUser(user){
 }
 
 
-function creditReferalUser(req, res){
-  const referUser = User.findOne({
-    where:{
-      refer_link:"qmiddn"
+  const sendConfirmMail = async function(req,res,user,tok){
+    try{
+    var transporter = nodemailer.createTransport({ 
+      host: "smtp.mailtrap.io",
+      port: 2525,
+      auth: { 
+          user: '9c301e9bfbf54e', 
+          pass: '		1e1b635adb4ee8'
+                 } 
+      });
+      const mailOptions = { 
+    from: 'no-reply@yourwebapplication.com', 
+    to: user.email, 
+    subject: 'Account Verification Token', 
+  text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/user' + '\/confirmation\/' + tok.tok + '.\n' };
+  transporter.sendMail(mailOptions, function (err) { 
+      if(err){
+          return res.status(500).json({ 
+              msg: err.message 
+          });
+      }else{
+          res.status(200).json('A verification email has been sent to ' + user.email + '.');
+      }
+      }); // transporter.sendMail ends
+
+    }catch(err){
+      console.log(err);
     }
-  //   include:[
-  //     {
-  //         model: UserWallet
-  //     }
-  // ]
-  }) 
-console.log(referUser);
-  // if(!referUser){
-  //   res.status(201).json({
-      
-  //     message:"sorry this link does not exist"
-  //    });
-  // }else{
-  //   console.log(referUser);
-  // }
-}
+  }
+
+
+
 
 module.exports ={
 
@@ -77,9 +88,7 @@ module.exports ={
                  id: 1
                }
              })
-          //  //   console.log(role);
-          
-             
+          //  //   conso
            let token = Math.random().toString(36).substr(0,20);
            req.body['token'] = token;
            req.body['RoleId'] = role.id;
@@ -87,19 +96,24 @@ module.exports ={
              const user = await User.create(req.body);
              req.body['initial_amount'] = "300";
              req.body['actual_amount'] = "4000";
-             req.body['UserId'] = "7";
+             req.body['UserId'] = user.id;
              const user_wallet = await UserWallet.create(req.body);
-            //console.log(user);
-            // const userJson = user.toJSON()
-           
-            // res.send({
-            //   user: userJson ,
-            //   token1: jwtSignUser(userJson)
-            //  });
-            //  console.log(token1);
+               const tok = Math.random().toString(36).substr(0,20);
+             req.body['userToken'] = tok;
+             req.body['UserId'] = user.id;
+                 
+           //const sendMail  = await  sendConfirmMail(req,res,user,tok);
+           console.log(sendMail);
+             var createToken = await Token.create(req.body,);
+              console.log(createToken);
+             
+              
+     
+           //console.log(sendMail);
              return res.status(201).json({
                data:user,
                data1: user_wallet,
+               data2:createToken,
                message:"Registration is Successful"
               });
          }catch(err){
@@ -110,31 +124,7 @@ module.exports ={
          }
     },
 
-    async sendConfirmMail(req,res){
-      var transporter = nodemailer.createTransport({ 
-        host: "smtp.mailtrap.io",
-        port: 2525,
-        auth: { 
-            user: '9c301e9bfbf54e', 
-            pass: '	1e1b635adb4ee8'
-                   } 
-        });
-        const mailOptions = { 
-      from: 'no-reply@yourwebapplication.com', 
-      to: newUser.email, 
-      subject: 'Account Verification Token', 
-    text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/user' + '\/confirmation\/' + token.token + '.\n' };
-    transporter.sendMail(mailOptions, function (err) { 
-        if(err){
-            return res.status(500).json({ 
-                msg: err.message 
-            });
-        }else{
-            res.status(200).json('A verification email has been sent to ' + newUser.email + '.');
-        }
-        }); // transporter.sendMail ends
-    },
-
+   
     async login(req, res) {
            
       try{
