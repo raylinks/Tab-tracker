@@ -16,6 +16,7 @@ module.exports = (app) => {
 
     // AUTHENTICATION ROUTES HERE
      app.post('/register', 
+     
        AuthenticationController.register)
 
     app.post('/login', 

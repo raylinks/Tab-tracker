@@ -3,6 +3,7 @@ const {User, Role, UserWallet,Token} = require('../models');
 const nodemailer = require('nodemailer');
 const jwt = require('jsonwebtoken');
 const CONFIG = require('../config/config');
+const { body} = require('express-validator/check');
 
 
 function jwtSignUser(user){
@@ -48,47 +49,27 @@ function jwtSignUser(user){
 
 module.exports ={
 
-
-    async  getlink_Userwallet(req,res){
-      try{
-        const referUser = await User.findOne({
-          where:{
-            refer_link:"qmiddn"
-          },
-          include:[
-             {
-                 model: UserWallet
-             }
-         ]
-        }) 
-    //  console.log(referUser.UserWallet.initial_amount);
-        if(!referUser){
-          res.status(400).json({
-            message:"sorry this link does not exist"
-           });
-        }else{
-          res.status(200).json({
-          data:referUser.UserWallet.initial_amount,
-          message:"this is your initial amount"
-
-        })
-         }
-      }catch(err){
-        console.log(err);
-
-      }
-    },
-
-
-     async register(req, res) {
+      async register
+      (req, res) {
          try{
-      
+           if(!req.body.firstname){
+            res.status(422).json({success: false, msg: ' firstname Fields  required'});
+           }else if(!req.body.email){
+            res.status(422).json({success: false, msg: 'your email Field required'})
+           }else if(!req.body.lastname){
+            res.status(422).json({success: false, msg: 'lastname Field required'});
+           }else if(!req.body.phone){
+            res.status(422).json({success: false, msg: 'phone Field required'});
+           }else if(!req.body.password){
+            res.status(422).json({success: false, msg: 'password Field required'});
+           }
              const role =await Role.findOne({
                where:{
                  id: 1
                }
              })
-          //  //   conso
+            
+//   conso
            let token = Math.random().toString(36).substr(0,20);
            req.body['token'] = token;
            req.body['RoleId'] = role.id;
@@ -103,12 +84,11 @@ module.exports ={
              req.body['UserId'] = user.id;
                  
            //const sendMail  = await  sendConfirmMail(req,res,user,tok);
-           console.log(sendMail);
+           //console.log(sendMail);
              var createToken = await Token.create(req.body,);
-              console.log(createToken);
+            
              
-              
-     
+            
            //console.log(sendMail);
              return res.status(201).json({
                data:user,
@@ -116,12 +96,14 @@ module.exports ={
                data2:createToken,
                message:"Registration is Successful"
               });
-         }catch(err){
-           console.log(err);
+            
+         }catch(errors){
+           console.log(errors);
                 //res.status(400).send({
                   //error:' this email address is already in use'  
           //  })
          }
+         
     },
 
    
@@ -254,5 +236,37 @@ module.exports ={
       }catch(err){
         console.log(err);
       }
-    }
+    },
+
+
+    async  getlink_Userwallet(req,res){
+      try{
+        const referUser = await User.findOne({
+          where:{
+            refer_link:"qmiddn"
+          },
+          include:[
+             {
+                 model: UserWallet
+             }
+         ]
+        }) 
+    //  console.log(referUser.UserWallet.initial_amount);
+        if(!referUser){
+          res.status(400).json({
+            message:"sorry this link does not exist"
+           });
+        }else{
+          res.status(200).json({
+          data:referUser.UserWallet.initial_amount,
+          message:"this is your initial amount"
+
+        })
+         }
+      }catch(err){
+        console.log(err);
+
+      }
+    },
+
 }

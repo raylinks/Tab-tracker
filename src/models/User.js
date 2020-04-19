@@ -10,9 +10,15 @@ const Promise           = require('bluebird');
 
 module.exports = (sequelize, DataTypes) => {
     var Model = sequelize.define('User', {
-        firstname     : DataTypes.STRING,
-        lastname      : DataTypes.STRING,
-        email     : {
+        firstname     : {
+            type: DataTypes.STRING,
+            required: [true, 'firstname is required'],
+            },
+        lastname      :{
+            type: DataTypes.STRING,
+            required: [true, 'lastname is required'],
+        },
+            email     : {
             type: DataTypes.STRING,
              allowNull: true,
              unique: true, 
@@ -22,7 +28,11 @@ module.exports = (sequelize, DataTypes) => {
         phone     : {type: DataTypes.STRING, allowNull: true, unique: true, 
                         validate: { len: {args: [7, 20], msg: "Phone number invalid, too short."}, 
                         isNumeric: { msg: "not a valid phone number."} }},
-        password  : DataTypes.STRING,
+        password  : {
+            type:DataTypes.STRING,
+            required: [true, 'password is required'],
+        },
+
         token: DataTypes.STRING,
         refer_link:DataTypes.STRING
        // EmailConfirm : {type: DataTypes.BOOLEAN, defaultValue: false},
