@@ -16,12 +16,13 @@ function jwtSignUser(user){
 
   const sendConfirmMail = async function(req,res,user,tok){
     try{
+      console.log(data.email);
     var transporter = nodemailer.createTransport({ 
       host: "smtp.mailtrap.io",
       port: 2525,
       auth: { 
-          user: '9c301e9bfbf54e', 
-          pass: '		1e1b635adb4ee8'
+        user: "c33fa1ba195c5b", 
+        pass: "be63060ae9251a"
                  } 
       });
       const mailOptions = { 
@@ -68,8 +69,7 @@ module.exports ={
                  id: 1
                }
              })
-            
-//   conso
+  
            let token = Math.random().toString(36).substr(0,20);
            req.body['token'] = token;
            req.body['RoleId'] = role.id;
@@ -82,14 +82,34 @@ module.exports ={
                const tok = Math.random().toString(36).substr(0,20);
              req.body['userToken'] = tok;
              req.body['UserId'] = user.id;
-                 
-           //const sendMail  = await  sendConfirmMail(req,res,user,tok);
-           //console.log(sendMail);
+      
              var createToken = await Token.create(req.body,);
-            
-             
-            
-           //console.log(sendMail);
+           var transporter = nodemailer.createTransport({ 
+            host: "smtp.mailtrap.io",
+            port: 2525,
+            auth: { 
+                user: "c33fa1ba195c5b", 
+                pass: "be63060ae9251a"
+                       } 
+            });
+            const mailOptions = { 
+          from: 'no-reply@yourwebapplication.com', 
+          to: user.email, 
+          subject: 'Account Verification Token', 
+        text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/user' + '\/confirmation\/' + tok.tok + '.\n' };
+        transporter.sendMail(mailOptions, function (err) { 
+            if(err){
+                return res.status(500).json({ 
+                    msg: err.message 
+                });
+            }else{
+                res.status(200).json('A verification email has been sent to ' + user.email + '.');
+               
+            }
+             });
+
+
+
              return res.status(201).json({
                data:user,
                data1: user_wallet,
