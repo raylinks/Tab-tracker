@@ -6,6 +6,7 @@ const ServiceController = require('./controllers/ServiceController')
 const CommentController = require('./controllers/CommentController')
 const RoleController = require('./controllers/RoleController')
 const CardController = require('./controllers/CardController')
+const VerificationController = require('./controllers/VerificationController')
 const  multer = require('multer');
 
 module.exports = (app) => {
@@ -21,6 +22,10 @@ module.exports = (app) => {
 
     app.post('/login', 
        AuthenticationController.login)
+
+
+       app.get('/verify-email',
+       VerificationController.VerifyEmail)
 
    app.get('/all/users',
       AuthenticationController.getUsers)

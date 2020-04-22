@@ -96,16 +96,16 @@ module.exports ={
           from: 'no-reply@yourwebapplication.com', 
           to: user.email, 
           subject: 'Account Verification Token', 
-        text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/user' + '\/confirmation\/' + tok.tok + '.\n' };
+        text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/verify-email'  + '?' + createToken.userToken + '.\n' };
         transporter.sendMail(mailOptions, function (err) { 
-            if(err){
-                return res.status(500).json({ 
-                    msg: err.message 
-                });
-            }else{
-                res.status(200).json('A verification email has been sent to ' + user.email + '.');
+            // if(err){
+            //     return res.status(500).json({ 
+            //         msg: err.message 
+            //     });
+            // }else{
+            //     res.status(200).json('A verification email has been sent to ' + user.email + '.');
                
-            }
+            // }
              });
 
 
