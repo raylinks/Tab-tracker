@@ -130,6 +130,11 @@ module.exports ={
     async login(req, res) {
            
       try{
+        if(!req.body.email){
+          res.status(422).json({success: false, msg: ' email Field  required'});
+         }else if(!req.body.password){ 
+          res.status(422).json({success: false, msg: 'your password Field required'})
+         } 
        // console.log(config.authentication.jwtSecret);
         const {email, password}=  req.body;
 
@@ -138,7 +143,7 @@ module.exports ={
               email: email
             }
           })
-    
+  
           if (user){
            
           
@@ -147,15 +152,19 @@ module.exports ={
             if (!isPasswordValid){
             
               return res.status(403).send({
-                error:'ha the login information was incorrect'
+                error:' password is incorrect'
               })
             }
+          }else{
+            return res.status(403).send({
+              error:' the login information was incorrect'
+            })
           }
-           //  const userJson = user.toJSON()
+            const userJson = user.toJSON()
              const token2 = jwt.sign(user.toJSON(), CONFIG.jwtSecret,{
               expiresIn:"1h"
           });
-         console.log(token2);
+        
         res.send({
           user: user ,
          token1:  token2
