@@ -41,3 +41,14 @@ module.exports = {
 //export const uploadImage = (file) => new Promise((resolve, reject) => {
 // 
 //})
+
+
+module.exports = {
+  async formatText(req,res, file){
+      try{
+        
+      }catch(err){
+          console.log(err);
+      }
+  }
+}
