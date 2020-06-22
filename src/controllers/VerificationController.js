@@ -8,7 +8,7 @@ module.exports ={
                 where: {userToken: req.params.token}
             })
             
-console.log(VerifyToken);
+console.log(VerifyToken.UserId);
         let timestamp = Dae.now();
                 if(!VerifyToken){
                     res.status(403).send('success:false', 'sorry, this token doesnt exist anymore ');

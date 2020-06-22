@@ -7,7 +7,6 @@ const socketio = require('socket.io');
 const morgan = require('morgan');
 const { sequelize } = require('./models/index');
 const config =require('./config/config');
-const http = require('http');
 const {check,validationResult}  = require('express-validator');
 
  const formatMessage = require('./utils/message')
