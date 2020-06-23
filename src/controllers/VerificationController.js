@@ -5,11 +5,11 @@ module.exports ={
         try{
             console.log("welcome");
             const VerifyToken = await Token.findOne({
-                where: {userToken: req.params.token}
+                where: {userToken: req.body.token}
             })
             
-console.log(VerifyToken.UserId);
-        let timestamp = Dae.now();
+console.log(VerifyToken);
+        let timestamp = Date.now();
                 if(!VerifyToken){
                     res.status(403).send('success:false', 'sorry, this token doesnt exist anymore ');
                 }
