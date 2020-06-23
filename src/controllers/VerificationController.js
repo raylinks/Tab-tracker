@@ -1,4 +1,5 @@
 const {Token} = require('../models');
+const CONFIG = require('../config/config');
 
 module.exports ={
     async VerifyEmail(req, res){
@@ -8,13 +9,16 @@ module.exports ={
                 where: {userToken: req.body.token}
             })
             
-console.log(VerifyToken);
+
         let timestamp = Date.now();
                 if(!VerifyToken){
                     res.status(403).send('success:false', 'sorry, this token doesnt exist anymore ');
+                   // console.log("doesnt exist");
                 }
-                const url = config('CONFIG.frontend') + '\/welcome';
-                   VerifyToken.userToken = null;
+                const url = CONFIG.frontend + '\/welcome';
+                   VerifyToken.userToken =  null
+                   VerifyToken.save();
+                   console.log("hallle");
                     verified_at = timestamp;
                     res.redirect(url);
 
@@ -22,4 +26,4 @@ console.log(VerifyToken);
              console.log(errors);
         }
     },
-}
+} 
