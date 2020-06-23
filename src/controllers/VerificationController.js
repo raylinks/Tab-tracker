@@ -1,4 +1,5 @@
 const {Token} = require('../models');
+const {User} = require('../models');
 const CONFIG = require('../config/config');
 
 module.exports ={
@@ -6,10 +7,15 @@ module.exports ={
         try{
             console.log("welcome");
             const VerifyToken = await Token.findOne({
-                where: {userToken: req.body.token}
-            })
+                where: {userToken: req.body.token},
+                include:[
+                    {
+                        model: User
+                    }
+                ]
+            });
             
-
+            console.log(VerifyToken);
         let timestamp = Date.now();
                 if(!VerifyToken){
                     res.status(403).send('success:false', 'sorry, this token doesnt exist anymore ');
