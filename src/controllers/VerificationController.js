@@ -18,7 +18,7 @@ module.exports ={
            
        let timestamp = Date.now();
                 if(!VerifyToken){
-                    res.status(403).send('success:false', 'sorry, this token doesnt exist anymore ');
+                    return res.status(404).send({error : 'sorry, this token doesnt exist anymore '});
                 }
                 const url = CONFIG.frontend + '\/welcome';
                  VerifyToken.userToken =  null
@@ -26,6 +26,7 @@ module.exports ={
                     verified_at: timestamp
                   })
                    VerifyToken.save();
+                   console.log(url);
                     res.redirect(url);
 
         }catch(errors){
