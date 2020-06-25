@@ -15,17 +15,17 @@ module.exports ={
                 ]
             });
             
-            console.log(VerifyToken);
-        let timestamp = Date.now();
+           
+       let timestamp = Date.now();
                 if(!VerifyToken){
                     res.status(403).send('success:false', 'sorry, this token doesnt exist anymore ');
-                   // console.log("doesnt exist");
                 }
                 const url = CONFIG.frontend + '\/welcome';
-                   VerifyToken.userToken =  null
+                 VerifyToken.userToken =  null
+                 VerifyToken.User.update({
+                    verified_at: timestamp
+                  })
                    VerifyToken.save();
-                   console.log("hallle");
-                    verified_at = timestamp;
                     res.redirect(url);
 
         }catch(errors){

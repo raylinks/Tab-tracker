@@ -34,7 +34,8 @@ module.exports = (sequelize, DataTypes) => {
         },
 
         token: DataTypes.STRING,
-        refer_link:DataTypes.STRING
+        refer_link:DataTypes.STRING,
+        verified_at: DataTypes.DATE
        // EmailConfirm : {type: DataTypes.BOOLEAN, defaultValue: false},
         //OTP  : DataTypes.STRING,
     });
